@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante Ramon - Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div id="notification-container"></div>
+        <header>
+            <div class="container header-content">
+                <h1 class="logo">Mesa de <span>Dois</span></h1>
+                <nav id="user-nav" class="hidden">
+                    <span id="user-display"></span>
+                    <button id="btn-logout" class="btn btn-outline">Sair</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <section id="auth-section" class="auth-container">
+                <div id="login-form-container" class="card fade-in">
+                    <h2 class="section-title">Login</h2>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="login-email">E-mail</label>
+                            <input type="email" id="login-email" required placeholder="seuemail@exemplo.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Senha</label>
+                            <input type="password" id="login-password" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full" id="btn-login-submit">Entrar</button>
+                        <p class="auth-switch">Não tem conta? <a href="#" id="switch-to-register">Registre-se</a></p>
+                    </form>
+                </div>
+
+                <div id="register-form-container" class="card fade-in hidden">
+                    <h2 class="section-title">Registro</h2>
+                    <form id="register-form">
+                        <div class="form-group">
+                            <label for="register-name">Nome</label>
+                            <input type="text" id="register-name" required placeholder="Seu Nome">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">E-mail</label>
+                            <input type="email" id="register-email" required placeholder="seuemail@exemplo.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">Senha</label>
+                            <input type="password" id="register-password" required placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-confirm">Confirmar Senha</label>
+                            <input type="password" id="register-confirm" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full" id="btn-register-submit">Criar
+                            Conta</button>
+                        <p class="auth-switch">Já tem conta? <a href="#" id="switch-to-login">Faça Login</a></p>
+                    </form>
+                </div>
+            </section>
+            <section id="dashboard-section" class="hidden">
+                <div class="dashboard-header">
+                    <h2 class="section-title">Gerenciar Pratos</h2>
+                    <button id="btn-open-create-modal" class="btn btn-primary">Novo Prato</button>
+                </div>
+
+                <div class="search-bar card">
+                    <input type="text" id="prato-search" placeholder="Pesquisar pratos por nome...">
+                </div>
+
+                <div id="pratos-loading" class="loading-spinner hidden">
+                    <div class="spinner"></div>
+                    <p>Carregando pratos...</p>
+                </div>
+
+                <div id="pratos-grid" class="pratos-grid">
+                </div>
+
+                <div id="no-pratos-message" class="empty-state hidden">
+                    <p>Nenhum prato encontrado. Comece criando um novo!</p>
+                </div>
+            </section>
+        </main>
+        <div id="prato-modal" class="modal-overlay hidden">
+            <div class="modal-content card slide-down">
+                <div class="modal-header">
+                    <h3 id="modal-title">Novo Prato</h3>
+                    <button class="btn-close" id="btn-close-modal">&times;</button>
+                </div>
+                <form id="prato-form">
+                    <input type="hidden" id="prato-id">
+                    <div class="form-group">
+                        <label for="prato-nome">Nome do Prato</label>
+                        <input type="text" id="prato-nome" required placeholder="Ex: Risoto de Camarão">
+                    </div>
+                    <div class="form-group">
+                        <label for="prato-descricao">Descrição</label>
+                        <textarea id="prato-descricao" required
+                            placeholder="Uma breve descrição do prato..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prato-preco">Preço (R$)</label>
+                            <input type="number" id="prato-preco" step="0.01" required placeholder="0,00">
+                        </div>
+                        <div class="form-group">
+                            <label for="prato-categoria">Categoria</label>
+                            <select id="prato-categoria" required>
+                                <option value="">Selecione...</option>
+                                <option value="Entrada">Entrada</option>
+                                <option value="Prato Principal">Prato Principal</option>
+                                <option value="Sobremesa">Sobremesa</option>
+                                <option value="Bebida">Bebida</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline" id="btn-cancel-prato">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-save-prato">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <div class="container">
+                <p>Desenvolvido por Luis e Daniel.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
